@@ -2,13 +2,12 @@
 # Project Specific (Masking related)
 masking/build
 masking/bin
-masking/ext
 
 # Project Specific (Mitsuba-related)
 
 mitsuba/build
 mitsuba/bin
-mitsuba/ext
+mitsuba/ext/
 
 # Project Specific (Scenes-related)
 scenes/*

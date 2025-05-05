@@ -1,3 +1,6 @@
 [submodule "mitsuba"]
 	path = mitsuba
 	url = https://github.com/mitsuba-renderer/mitsuba
+[submodule "masking/ext/svg-cpp-plot"]
+	path = masking/ext/svg-cpp-plot
+	url = https://github.com/adolfomunoz/svg-cpp-plot

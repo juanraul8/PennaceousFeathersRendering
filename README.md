@@ -9,7 +9,7 @@
 
 ## Introduction
 
-The appearance of a real-world feather is the result of a complex light interaction with its multi-scale biological structure including the central shaft, branching barbs and interlocking barbules on those barbs. In this work, we propose a practical surface-based appearance model for feathers. We represent the far-field appearance of feathers using a BSDF that implicitly represents the light scattering from the main biological structures of a feather such as the shaft, barb and barbules. Our model accounts for the particular characteristics of feather barbs such as the non-cylindrical cross-sections and the scattering media via a numerically-based BCSDF. To model the relative visibility between barbs and barbules, we derive a masking term for the differential projected areas of the different components of the feather’s microgeometry, which allows to analytically compute the masking between barbs and barbules. As opposed to previous works, our model uses a lightweight representation of the geometry based on a 2D texture, and does not require to explicitly represent the barbs as curves. We show the flexibility and potential of our appearance model approach to represent the most important visual features of several pennaceous feathers.\\ 
+The appearance of a real-world feather is the result of a complex light interaction with its multi-scale biological structure including the central shaft, branching barbs and interlocking barbules on those barbs. In this work, we propose a practical surface-based appearance model for feathers. We represent the far-field appearance of feathers using a BSDF that implicitly represents the light scattering from the main biological structures of a feather such as the shaft, barb and barbules. Our model accounts for the particular characteristics of feather barbs such as the non-cylindrical cross-sections and the scattering media via a numerically-based BCSDF. To model the relative visibility between barbs and barbules, we derive a masking term for the differential projected areas of the different components of the feather’s microgeometry, which allows to analytically compute the masking between barbs and barbules. As opposed to previous works, our model uses a lightweight representation of the geometry based on a 2D texture, and does not require to explicitly represent the barbs as curves. We show the flexibility and potential of our appearance model approach to represent the most important visual features of several pennaceous feathers.   
 
 Implementation of [A Surface-based Appearance Model for Pennaceous Feathers](https://graphics.unizar.es/projects/FeathersAppearance_2024/) in Mitsuba 0.6.
 
@@ -38,6 +38,22 @@ Compile mitsuba by running the following comand inside the mitsuba folder:
 -j indicate the number of threads. The compilation usually takes around 2 minutes. For more details, you can check the -mitsuba_utils.sh- script or the Mitsuba documentation.
 
 Once mitsuba is compiled, copy the content inside feather_plugin inside the mitsuba folder and compile again.
+
+## Masking Installation
+
+Compile the files using cmake inside the folder masking. First, create the build folder:
+
+``` mkdir build ```
+
+Inside the build folder create the configuration file:
+
+``` cmake .. ```
+
+Compile the source code using 20 threads:
+
+``` make -j20 ```
+
+The compilation takes around 2 minutes. The masking solution requires the SVG libraries[svg.cc](https://github.com/adolfomunoz/svg.cc) and [svg-cpp-plot](https://github.com/adolfomunoz/svg-cpp-plot) as external source codes to create, manipulate and plot SVG figures.  
 
 ## Mitsuba Rendering
 
@@ -70,9 +86,27 @@ Execute the following script to create the renders of the teaser figure:
 
 This experiment takes around 37 minutes for 1280x720 images and 1024 spp.
 
-### Figure 08 (Ablation Studies, Fiber BCSDF)
+### Figure 05-06 (Sketch of the Masking)
 
+The figures 05 and 06 are created with the same script that Figure 10. The script includes parameters like number of monte carlo samples (integer) or the view angles (string):
 
+``` VIEWANGLES="25 70" ```
+
+The barbule configuration can be set as a string incide the script:
+
+```BARBULE_CONFIG="--excentricity=2 --separation=1" ``` 
+
+![Barbule Masking](https://github.com/juanraul8/PennaceousFeathersRendering/blob/main/resources/barbule-masking-25.svg)
+
+Similar to the barbule configuration, the barb configuration can also configured with a string:
+
+``` BARB_CONFIG="--excentricity=1.5 --barbule-length=2.75 --barbule-inclination=45 --left-transparency=0.5 --right-transparency=0.5" ``` 
+
+![Barb Masking](https://github.com/juanraul8/PennaceousFeathersRendering/blob/main/resources/barb-masking-70.svg)
+
+### Figure 07 (Ablation Studies, Fiber BCSDF)
+
+TO DO
 
 ### Figure 08 (Ablation Studies, Feather BSDF)
 
@@ -86,8 +120,25 @@ Inside the script you can set up the spp. This experiment takes around 1h39m for
 
 You can also find these renders in the project website.  
 
-### Figure 10 (Parameter Exploration, Supplemental Figures)
+### Figure 09 (Masking Validation)
 
+To replicate the validation figure of the masking term, run the following command:
+
+``` time bash generate-masking-paper-figures.sh  ```
+
+The experiment takes 2 minutes. The results can be found in the folder bin.
+
+The following command create the full set of masking experiments:
+
+``` time bash generate-figures.sh  ```
+
+The experiments take around 4 minutes. To transform all the figures to png, run the following command:
+
+``` time bash svg2png-all.sh  ```
+
+The process takes around 1 minute.
+
+### Figure 10 (Parameter Exploration, Supplemental Figures)
 
 Perform the appearance exploration for two parameters using the following script to replicate the Figure 10:
 
@@ -158,7 +209,9 @@ Inside the script the type of feather can be selected (red, green, blue or black
 * Initial steps: [Alvaro Romeo Arroyo TFG](https://zaguan.unizar.es/record/112309/files/TAZ-TFG-2021-4785.pdf)
 * Hair scattering model: [Hair BSDF](https://www.pbrt.org/hair.pdf)
 * Fur scattering model: [Fur BSDF](https://sites.cs.ucsb.edu/~lingqi/project_page/fur2/index.html)  
-* Simulating 2D Light Transport: [Tantalum](https://benedikt-bitterli.me/tantalum/)  
+* Simulating 2D light transport: [Tantalum](https://benedikt-bitterli.me/tantalum/) 
+* C++ SVG plot library: [svg.cc](https://github.com/adolfomunoz/svg.cc)   
+* C++ SVG manipulation library: [svg-cpp-plot](https://github.com/adolfomunoz/svg-cpp-plot)  
 
 ## Contact
 
